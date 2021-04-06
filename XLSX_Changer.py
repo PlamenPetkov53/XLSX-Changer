@@ -1,13 +1,15 @@
+from pathlib import Path
 import xlrd
 import xlsxwriter
-print("Enter the directory of xlsx file: ")
-path = input()
-print("Enter name of xlsx file: ")
-name_of_file = input()
-#"C:\\Users\\Plamen\\Downloads\\Book.xlsx"
-raw_string = r"{}".format(path)
-current_path = f"{raw_string}\\{name_of_file}.xlsx"
-workbook = xlrd.open_workbook(current_path)
+import os
+
+path = os.path.dirname(os.path.realpath(__file__))
+document_path = Path(path)
+for xlsx_file in document_path.glob('**/*.xlsx'):
+    print(xlsx_file)
+
+full_path = xlsx_file
+workbook = xlrd.open_workbook(xlsx_file)
 worksheet = workbook.sheet_by_index(0)
 
 all_rows = []
@@ -42,7 +44,7 @@ for row in range(0, len(all_rows)):
 print(all_rows)
 
 path_new_file = raw_string = r"{}".format(path)
-new_file = f"{path_new_file}\\Modified_{name_of_file}.xlsx"
+new_file = f"{full_path}.xlsx"
 new_workbook = xlsxwriter.Workbook(new_file)
 new_sheet = new_workbook.add_worksheet()
 
